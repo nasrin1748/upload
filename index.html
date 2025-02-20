@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory Picker Example</title>
+</head>
+<body>
+    <h1>Directory Picker Example</h1>
+    <button id="pickDirectory">Pick Directory</button>
+    <ul id="fileList"></ul>
+
+    <script>
+        document.getElementById('pickDirectory').addEventListener('click', async () => {
+            try {
+                const directoryHandle = await window.showDirectoryPicker();
+                const fileList = document.getElementById('fileList');
+                fileList.innerHTML = ''; // Clear any existing content
+
+                for await (const entry of directoryHandle.values()) {
+                    if (entry.kind === 'file') {
+                        const li = document.createElement('li');
+                        li.textContent = entry.name;
+                        fileList.appendChild(li);
+                    }
+                }
+            } catch (error) {
+                console.error('Error picking directory:', error);
+            }
+        });
+    </script>
+</body>
+</html>
